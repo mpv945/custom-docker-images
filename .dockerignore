@@ -1,0 +1,26 @@
+# 忽略 Git 相关文件
+git
+# 忽略临时文件
+*.tmp
+# 忽略特定目录
+build/
+
+.DS_Store
+.git/
+.env
+.history/
+
+**/.git
+**/.gitignore
+**/.vscode
+**/coverage
+**/.env
+**/.aws
+**/.ssh
+Dockerfile
+*Dockerfile*
+README.md
+docker-compose.yml
+**/.DS_Store
+**/venv
+**/env
