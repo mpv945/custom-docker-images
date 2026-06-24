@@ -9,7 +9,7 @@ RUN pip install \
     --no-cache-dir \
     -r requirements.txt
 
-COPY install_duckdb_extensions.py .
+COPY scripts/install_duckdb_extensions.py .
 
 RUN python install_duckdb_extensions.py
 
