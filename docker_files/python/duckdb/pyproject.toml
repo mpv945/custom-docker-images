@@ -1,0 +1,27 @@
+[project]
+name = "duckdb-env-runtime"
+version = "0.1.0"
+description = "限定依赖的版本范围"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.135.1",
+    "httpx>=0.28.1",
+    "jinja2>=3.1.6",
+    "loguru>=0.7.3",
+    "openpyxl>=3.1.5",
+    "paho-mqtt>=2.1.0",
+    "pydantic-settings>=2.13.1",
+    "pyinstaller>=6.19.0",
+    "pymysql>=1.1.2",
+    "python-jose[cryptography]>=3.5.0",
+    "redis>=7.3.0",
+    "sqlalchemy>=2.0.48",
+    "uvicorn[standard]>=0.42.0",
+]
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+    "mypy"
+]

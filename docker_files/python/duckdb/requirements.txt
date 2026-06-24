@@ -1,0 +1,7 @@
+duckdb>=1.5.4
+
+pandas
+pyarrow
+polars
+
+boto3

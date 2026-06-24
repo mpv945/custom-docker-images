@@ -1,0 +1,25 @@
+FROM python:3.13-slim
+
+ENV TZ=Asia/Shanghai
+
+RUN apt-get update && \
+    apt-get install -y \
+    curl \
+    ca-certificates \
+    gcc \
+    g++ \
+    git && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir \
+    -r requirements.txt
+
+COPY install_duckdb_extensions.py .
+
+RUN python install_duckdb_extensions.py
+
+CMD ["python"]

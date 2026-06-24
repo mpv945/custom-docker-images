@@ -1,11 +1,12 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Python application
+name: Build Docker Image
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
     branches: [ "main" ]
 
@@ -18,22 +19,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with pytest
-      run: |
-        pytest
+      - uses: actions/checkout@v7
+  #    - name: Set up Python 3.10
+  #      uses: actions/setup-python@v3
+  #      with:
+  #        python-version: "3.10"
+  #    - name: Install dependencies
+  #      run: |
+  #        python -m pip install --upgrade pip
+  #        pip install flake8 pytest
+  #        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+  #    - name: Lint with flake8
+  #      run: |
+  #        # stop the build if there are Python syntax errors or undefined names
+  #        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+  #        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+  #        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+  #    - name: Test with pytest
+  #      run: |
+  #        pytest
+      - name: Build Image
+        run: |
+          cd docker_files/python/duckdb
+
+          ls -lh
+          
+          docker build -f ./Dockerfile \
+            -t duckdb-python:latest .
+
+      - name: Export Image
+        # docker save $(docker images --format "{{.Repository}}:{{.Tag}}" | grep "my-app") -o my-apps.tar
+        #run: |
+        #  docker save duckdb-python:latest \
+        #  -o duckdb-python.tar # 加载：docker load -i nginx.tar
+        #run: docker save duckdb-python:latest | gzip > duckdb-python.tar.gz 加载 gunzip -c nginx.tar.gz | docker load 或者 zcat nginx.tar.gz | docker load
+        run: docker save duckdb-python:latest | xz > duckdb-python.tar.xz # 加载 xz -d -c nginx.tar.xz | docker load
+

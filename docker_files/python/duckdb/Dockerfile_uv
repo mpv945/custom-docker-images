@@ -1,0 +1,55 @@
+FROM python:3.13-slim
+LABEL authors="zhenx"
+
+ENV TZ=Asia/Shanghai
+
+ENV UV_SYSTEM_PYTHON=1
+
+#
+# 安装 uv
+#
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+
+ENV PATH="/root/.local/bin:$PATH"
+
+# DuckDB 默认扩展目录：/root/.duckdb/extensions 生产环境建议：
+ENV DUCKDB_EXTENSION_DIRECTORY=/opt/duckdb/extensions
+
+WORKDIR /app
+
+COPY pyproject.toml ./
+
+#
+# 安装依赖
+#
+RUN uv pip install --system \
+    duckdb \
+    pandas \
+    pyarrow \
+    polars \
+    boto3 \
+# 1. uv 配合pyproject.toml安装依赖
+#COPY pyproject.toml .
+# RUN uv sync
+# 2. 严格版本锁定
+#COPY uv.lock .
+#RUN uv sync --frozen
+# 同步开发组的依赖安装
+# uv sync --group dev
+
+COPY scripts/install_duckdb_extensions.py .
+
+#
+# 下载 DuckDB Extension
+#
+RUN mkdir -p /opt/duckdb/extensions
+RUN python install_duckdb_extensions.py
+
+#
+# 查看插件
+#
+RUN python -c "\
+import duckdb; \
+print(duckdb.sql('select * from duckdb_extensions()').fetchall())"
+
+CMD ["python"]
