@@ -3,7 +3,7 @@ FROM python:3.13-slim AS builder
 WORKDIR /build
 
 COPY requirements.txt .
-
+# pip install --prefix=/install 安装到了： /install/lib/python3.13/site-packages 而不是当前 Python 的：/usr/local/lib/python3.13/site-packages
 RUN pip install \
     --prefix=/install \
     --no-cache-dir \
@@ -11,7 +11,9 @@ RUN pip install \
 
 COPY scripts/install_duckdb_extensions.py .
 
-RUN python install_duckdb_extensions.py
+#RUN python install_duckdb_extensions.py
+RUN PYTHONPATH=/install/lib/python3.13/site-packages \
+    python install_duckdb_extensions.py
 
 
 FROM python:3.13-slim
