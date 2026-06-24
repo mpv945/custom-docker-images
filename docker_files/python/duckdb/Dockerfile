@@ -24,8 +24,8 @@ COPY --from=builder /root/.duckdb /root/.duckdb
 
 WORKDIR /app
 
-RUN python -c "\
-import duckdb; \
-print(duckdb.sql('select * from duckdb_extensions()').fetchall())"
+#RUN python -c "\
+#import duckdb; \
+#print(duckdb.sql('select * from duckdb_extensions()').fetchall())"
 
 CMD ["python"]

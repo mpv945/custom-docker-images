@@ -48,6 +48,7 @@ jobs:
             -t duckdb-python:latest .
 
       - name: Export Image
+        # https://oneuptime.com/blog/post/2026-01-16-docker-export-import-images/view
         # docker save $(docker images --format "{{.Repository}}:{{.Tag}}" | grep "my-app") -o my-apps.tar
         #run: |
         #  docker save duckdb-python:latest \
@@ -55,3 +56,8 @@ jobs:
         #run: docker save duckdb-python:latest | gzip > duckdb-python.tar.gz 加载 gunzip -c nginx.tar.gz | docker load 或者 zcat nginx.tar.gz | docker load
         run: docker save duckdb-python:latest | xz > duckdb-python.tar.xz # 加载 xz -d -c nginx.tar.xz | docker load
 
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: duckdb-image-artifact
+          path: duckdb-python.tar.xz
