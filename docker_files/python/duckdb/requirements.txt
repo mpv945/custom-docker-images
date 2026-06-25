@@ -3,5 +3,24 @@ duckdb>=1.5.4
 pandas
 pyarrow
 polars
+numpy
 
 boto3
+
+matplotlib
+plotly
+pyecharts
+
+openpyxl
+xlsxwriter
+reportlab
+
+requests
+beautifulsoup4
+lxml
+
+fastapi
+uvicorn
+jinja2
+
+selenium
