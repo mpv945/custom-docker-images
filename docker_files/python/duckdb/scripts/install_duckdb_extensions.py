@@ -6,7 +6,16 @@ extensions = [
     "mysql",
     "iceberg",
     "delta",
+    "ducklake",
+    "avro",
+    "excel",
+    "fts",
+    "inet",
+    "icu",
+    "encodings",
     "json",
+    "spatial",
+    "sqlite",
     "parquet"
 ]
 
